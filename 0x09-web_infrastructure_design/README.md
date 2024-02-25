@@ -1,11 +1,9 @@
-0x09. Web infrastructure design
+Hey there! I'm Charmaine Mbatha from South Africa, and this is my take on scaling up our infrastructure to handle increased traffic.
 
-Requirements
-General
-A README.md file, at the root of the folder of the project, is mandatory
-For each task, once you are done whiteboarding (on a whiteboard, piece of paper or software or your choice), take a picture/screenshot of your diagram
-This project will be manually reviewed:
-As each task is completed, the name of that task will turn green
-Upload a screenshot, showing that you completed the required levels, to any image hosting service (I personally use imgur but feel free to use anything you want).
-For the following tasks, insert the link from of your screenshot into the answer file
-After pushing your answer file to GitHub, insert the GitHub file link into the URL box.
+## Web Server vs Application Server: What's the Deal?
+
+Let's start by understanding the difference between the web server and the application server:
+
+- Web Server: This is like the frontliner, serving static files and handling incoming HTTP requests.
+  
+- Application Server: This is where the real work happens. It executes the business logic, handles dynamic content, and interacts with the database.

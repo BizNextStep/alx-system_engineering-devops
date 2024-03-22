@@ -1,6 +1,11 @@
-# Puppet manifest to install Flask package from pip3
+# Define a class to manage the Flask package
+class { 'python::pip': }
 
-package { 'flask':
-  ensure   => '2.1.0',
+# Install Flask with specific version
+package { 'Flask':
+  ensure => installed,
   provider => 'pip3',
+  require => Class['python::pip'],
+  # Specify the exact version
+  version => '2.1.0',
 }

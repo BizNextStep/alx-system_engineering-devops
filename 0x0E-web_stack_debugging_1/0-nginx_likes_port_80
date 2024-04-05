@@ -1,33 +1,35 @@
 #!/usr/bin/env bash
 
-# Start Nginx
-systemctl start nginx
+# Check if Nginx is already running
+if ! systemctl status nginx &> /dev/null; then
+  echo "Starting Nginx..."
+  systemctl start nginx
+fi
 
 # Check if Nginx is listening on port 80
 if ! netstat -tuln | grep :80 > /dev/null; then
-  # Restart Nginx
+  echo "Nginx not listening on port 80. Restarting..."
   systemctl restart nginx
 
-  # Check if Nginx is listening on port 80
+  # Check again after restart
   if ! netstat -tuln | grep :80 > /dev/null; then
-    # Check the Nginx configuration files
-    if nginx -t > /dev/null; then
-      # Restart Nginx
-      systemctl restart nginx
+    echo "Nginx failed to listen on port 80 after restart."
 
-      # Check if Nginx is listening on port 80
-      if ! netstat -tuln | grep :80 > /dev/null; then
-        # Check the Nginx error logs
-        if [ -s /var/log/nginx/error.log ]; then
-          tail -n 100 /var/log/nginx/error.log
-        else
-          echo "No error logs found."
-        fi
+    # Check Nginx configuration
+    if nginx -t > /dev/null; then
+      echo "Nginx configuration appears valid."
+      echo "Checking Nginx error logs..."
+      if [ -s /var/log/nginx/error.log ]; then
+        tail -n 100 /var/log/nginx/error.log
+      else
+        echo "No error logs found."
       fi
     else
-      # Check the Nginx configuration files
+      echo "Nginx configuration may be invalid. Please check the output of 'nginx -t'"
       nginx -t
     fi
   fi
 fi
+
+echo "Nginx is now listening on port 80 (hopefully)."
 

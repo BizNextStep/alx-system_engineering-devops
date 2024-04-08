@@ -1,35 +1,10 @@
 #!/usr/bin/env bash
 
-# Check if Nginx is already running
-if ! systemctl status nginx &> /dev/null; then
-  echo "Starting Nginx..."
-  systemctl start nginx
-fi
+# Remove the default configuration file in /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
 
-# Check if Nginx is listening on port 80
-if ! netstat -tuln | grep :80 > /dev/null; then
-  echo "Nginx not listening on port 80. Restarting..."
-  systemctl restart nginx
+# Create a symbolic link to the default configuration file in /etc/nginx/sites-available/
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-  # Check again after restart
-  if ! netstat -tuln | grep :80 > /dev/null; then
-    echo "Nginx failed to listen on port 80 after restart."
-
-    # Check Nginx configuration
-    if nginx -t > /dev/null; then
-      echo "Nginx configuration appears valid."
-      echo "Checking Nginx error logs..."
-      if [ -s /var/log/nginx/error.log ]; then
-        tail -n 100 /var/log/nginx/error.log
-      else
-        echo "No error logs found."
-      fi
-    else
-      echo "Nginx configuration may be invalid. Please check the output of 'nginx -t'"
-      nginx -t
-    fi
-  fi
-fi
-
-echo "Nginx is now listening on port 80 (hopefully)."
-
+# Restart Nginx to apply the configuration changes
+service nginx restart

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Run Nginx as Nginx
+
+# Set Nginx to run as nginx user
+sed -i 's/user\s*\(.*\);/user nginx;/' /etc/nginx/nginx.conf
+
+# Update Nginx listening port
+sed -i 's/listen\s*\(.*\);/listen *:8080;/' /etc/nginx/sites-available/default
+
+# Restart Nginx
+sudo -u nginx service nginx restart
